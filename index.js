@@ -57,6 +57,7 @@ const sessionOptions = {
   },
 };
 
+//newfile
 app.use(session(sessionOptions));
 
 // Flash middleware setup
