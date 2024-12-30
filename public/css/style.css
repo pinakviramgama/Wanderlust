@@ -1,0 +1,215 @@
+/* Universal Reset */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    flex: 1;
+}
+
+/* Navbar Styling */
+.navbar {
+    height: 5rem;
+    font-size: 1.2rem !important;
+}
+
+.navbar-brand {
+    margin-left: 20px;
+    font-size: 2rem !important;
+    color: #fe424d !important;
+}
+
+.nav-link {
+    color: #222222 !important;
+}
+
+/* Footer Styling */
+.f-info {
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #ebebeb;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.f-info-links {
+    text-decoration: none;
+    width: 100%;
+}
+
+.f-info-links a {
+    text-decoration: none;
+}
+
+.f-info-socials {
+    width: 100%;
+    font-size: 1.2rem;
+}
+
+i:hover {
+    cursor: pointer;
+}
+
+/* Card Styling */
+.card {
+    margin: 15px;
+    transition: 0.1s ease-in;
+    border: none !important;
+    width: 100%;
+    max-width: 25rem;
+    max-height: 400px;
+}
+
+.card-img-top {
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover;
+    max-height: 250px; /* Set the height to make images larger */
+}
+
+.card-body {
+    padding: 1rem;
+    margin-top: 7px;
+}
+
+/* Link Styling */
+.list-link {
+    text-decoration: none;
+    display: block;
+}
+
+.list-link:hover {
+    text-decoration: none;
+}
+
+/* Image Overlay */
+.card-img-overlay {
+    opacity: 0;
+}
+
+.card-img-overlay:hover {
+    opacity: 0.2;
+    background: white;
+}
+
+/* Social Media Icons */
+.fa-square-facebook:hover {
+    color: blue;
+    font-size: 1.2rem;
+}
+
+.fa-x-twitter:hover {
+    color: black;
+    font-size: 1.2rem;
+}
+
+.fa-linkedin:hover {
+    color: blue;
+    font-size: 1.2rem;
+}
+
+.instagram-gradient-icon:hover {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #962fbf, #4f5bd5);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 1.2rem;
+}
+
+/* Button Styling */
+.add-btn {
+    color: #ebebeb;
+    background-color: #fe424d !important;
+    border: none !important;
+}
+
+.add-btn:hover {
+    opacity: 0.9;
+}
+
+/* Link Hover */
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Layout: Cards for various screen sizes */
+@media (max-width: 1200px) {
+    .card {
+        max-width: 18rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .card {
+        max-width: 100%;
+    }
+}
+
+
+.list-img {
+    width: 500px !important;
+    max-height: 400px !important; /* Force a specific height for listing images */
+    object-fit: cover !important; /* Ensure the image scales proportionally */
+    display: block !important;
+}
+
+button {
+    padding: 5px;
+    margin: 5px !important;
+    color: white !important;
+}
+
+.mybtn {
+     margin-left: 320px;
+}
+
+.f-info {
+    height: 130px !important;
+}
+
+.card {
+    border-radius: 1rem; /* Rounded corners for the card */
+    overflow: hidden; /* Ensures content stays within the card bounds */
+    height: 100%; /* Ensures all cards are the same height */
+}
+
+.card-img-container {
+    position: relative;
+    height: 250px; /* Standardize the height of the image container */
+    width: 100%; /* Ensures full width of the card */
+}
+
+.card-img-top {
+    border-radius: 0; /* Removes extra rounding for images */
+    object-fit: cover; /* Ensures the image covers the container without distortion */
+    height: 100%; /* Fills the height of the container */
+    width: 100%; /* Fills the width of the container */
+}
+
+.card-img-overlay {
+      opacity: 0;
+}
+
+.card-body {
+    padding: 1rem;
+    margin-top: 0.5rem;
+
+}
+

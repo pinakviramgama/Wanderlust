@@ -1,0 +1,84 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+
+<% if (success && success.length > 0) { %>
+  <div class="alert alert-info alert-dismissible fade show" role="alert">
+    <%= success %> <!-- Display the success message -->
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit</title>
+</head>
+<body>
+
+    <form method="post" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
+
+      <br>
+       <div class="row">
+    <div class="col-8 offset-2">
+      <h3>Edit this Listing</h3>
+      <br>
+        <!-- Title -->
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" id="title" name="listing[title]" placeholder="Enter Title"  value="<%= listing.title %>" class="form-control" required />
+          <div class="invalid-feedback">Please provide a valid title.</div>
+        </div>
+        <!-- Description -->
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea  rows="4" cols="8" id="description" name="listing[description]" placeholder="Enter Description" class="form-control" required><%= listing.description %></textarea>
+          <div class="invalid-feedback">Please provide a valid description.</div>
+        </div>
+        <!-- Price and Country -->
+        <div class="row mb-3">
+          <div class="col-12 col-md-4">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" id="price" name="listing[price]"  value="<%= listing.price %>" placeholder="Enter Price" class="form-control" required />
+            <div class="invalid-feedback">Please provide a valid price.</div>
+          </div>
+          <div class="col-12 col-md-8">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" id="country" name="listing[country]" value="<%= listing.country %>" placeholder="Enter Country" class="form-control" required />
+            <div class="invalid-feedback">Please provide a valid country.</div>
+          </div>
+        </div>
+        <!-- Image -->
+
+        <div class="mb-3">
+
+          <label for="image" class="form-label"><p>Original Image</p></label>
+           <div class="orgiImage" >
+           <img src="<%= listing.image.url %>" alt="">
+         </div>
+
+         <br>
+          <input type="file" id="image" placeholder="Please insert new image " name="listing[image]" class="form-control" value="<%= listing.image %>" />
+          <div class="invalid-feedback">Please provide a valid URL.</div>
+        </div>
+
+
+         <div class="mb-3">
+          <label for="location" class="form-label">Location</label>
+          <input type="text" id="location" name="listing[location]" class="form-control" value="<%= listing.location %>" required/>
+          <div class="invalid-feedback">Please provide a valid location.</div>
+        </div>
+
+        <button type="submit" class="btn btn-dark add-btn">Edit</button>
+    </div>
+  </div>
+
+
+    </form>
+
+    <style></style>
+
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/starability-css@2.0.0/dist/starability-basic.min.css">
+
+
+    <!-- Favicon -->
+    <link rel="favicon" href="https://cdn.freebiesupply.com/images/large/2x/airbnb-logo.png">
+
+    <!-- Correct path to your CSS file -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Bootstrap CSS from CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+          integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+          <link rel="stylesheet" href="/public/css/ratings.css">
+</head>
+<body>
+    <!-- Include Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/testlisting"><i class="fa-solid fa-compass"></i></a>
+            <!-- Hamburger Button - Visible only on smaller screens -->
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Navbar Links - Will be hidden on small screens, visible on large screens -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/testlisting">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/testlisting">Listings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/listings/new">Add Listing</a>
+                    </li>
+                </ul>
+
+               <div class="navbar-nav search">
+  <form action="/search" class="d-flex" id="search-form">
+    <input
+      id="search-input"
+      class="form-control me-2"
+      type="search"
+      name="location"
+      placeholder="Search"
+      aria-label="Search"
+      autocomplete="off"
+    />
+    <button class="btn" type="submit">
+      <i class="fa-solid fa-magnifying-glass"></i> Search
+    </button>
+  </form>
+  <!-- Suggestions Dropdown -->
+  <ul id="suggestions-list" class="list-group position-absolute mt-2" style="display: none; z-index: 1000;"></ul>
+</div>
+
+            </div>
+
+             <div class=" ms-auto" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <% if(!currUser) {%>
+                         <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/signup"><b>Signup</b></a>
+                    </li>
+                    <li class="nav-item">
+                           <a class="nav-link" href="/login"><b>Login</b></a>
+                    </li>
+                        <% } %>
+                     <% if(currUser) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Log - Out</a>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <style>
+    #navbarSupportedContent {
+        padding: 0.5625rem; /* Converted from 9px */
+        border-radius: 0.5625rem; /* Converted from 9px */
+        z-index: 100;
+    }
+
+    /* Small Screen Styles */
+    @media (max-width: 991px) {
+        /* Adjust navbar styles for small screens */
+        #navbarSupportedContent {
+            background-color: whitesmoke;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 9px;
+            top: 80% !important;      /* Center the navbar vertically */
+            position: absolute;       /* Use absolute positioning for centering */
+            left: 90%;                /* Center horizontally */
+        }
+    }
+
+    .search {
+        margin-right: 37rem;
+        color: black !important;
+    }
+
+    .search button {
+        padding: 0.5rem;
+        border-radius: 20px;
+        width: 170px !important;
+        background-color: #fe424d !important;
+        color: whitesmoke !important;
+    }
+
+    .search input {
+        height: 40px;
+        margin-top: 5px;
+        border-radius: 20px;
+    }
+
+    #suggestions-list {
+  width: 7%; /* Matches the width of the search bar */
+  max-height: 150px; /* Limit height for scroll */
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+
+  font-size: 15px;
+
+  margin-left: 12px;
+  margin-top: 40px !important;
+}
+
+#suggestions-list li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+#suggestions-list li:hover {
+  background-color: #f8f9fa;
+}
+
+</style>
+
+<script>
+// Sample data for suggestions (replace with dynamic API call for real data)
+const suggestions = ["Paris", "New York", "Tokyo", "London", "Sydney", "Dubai", "Rome"];
+
+// Elements
+const searchInput = document.getElementById("search-input");
+const suggestionsList = document.getElementById("suggestions-list");
+const searchForm = document.getElementById("search-form");
+
+// Show suggestions as user types
+searchInput.addEventListener("input", function () {
+  const query = this.value.toLowerCase().trim();
+  suggestionsList.innerHTML = ""; // Clear existing suggestions
+  if (query) {
+    const matchedSuggestions = suggestions.filter((item) =>
+      item.toLowerCase().includes(query)
+    );
+
+    if (matchedSuggestions.length > 0) {
+      suggestionsList.style.display = "block";
+      matchedSuggestions.forEach((suggestion) => {
+        const listItem = document.createElement("li");
+        listItem.className = "list-group-item";
+        listItem.textContent = suggestion;
+
+        // On click, populate input and hide suggestions
+        listItem.addEventListener("click", () => {
+          searchInput.value = suggestion;
+          suggestionsList.style.display = "none";
+        });
+
+        suggestionsList.appendChild(listItem);
+      });
+    } else {
+      suggestionsList.style.display = "none";
+    }
+  } else {
+    suggestionsList.style.display = "none";
+  }
+});
+
+</script>
+
+
+    <!-- Your content goes here -->
+    <div class="container">
+        <!-- Dynamic content placeholder -->
+        <%- body %>
+    </div>
+
+    <!-- Include Footer -->
+    <%- include("../includes/footer.ejs") %>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom Script -->
+    <script src="/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/starability-js@2.0.0/dist/starability-basic.min.js"></script>
+
+</body>
+</html>

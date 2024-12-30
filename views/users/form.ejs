@@ -1,0 +1,58 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<% if (locals.success && locals.success.length > 0) { %>
+  <div class="alert alert-info alert-dismissible fade show" role="alert">
+    <%= locals.success %> <!-- Display the success message -->
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<% if (error && error.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= error %> <!-- Display the error message -->
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup - Wanderlust</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <br><br>
+  <div class="container">
+    <div class="row">
+      <div class="col-8 offset-2">
+        <h1>Signup to Wanderlust</h1>
+        <form action="/signup" method="POST" novalidate class="needs-validation">
+            <div class="mb-3">
+                <label for="username" >Username</label>
+                <input type="text" placeholder="Enter Username" class="form-control" required name="username" id="username">
+            </div>
+
+            <div class="mb-3">
+                <label for="email" >Email</label>
+                <input type="email" placeholder="Enter Email" class="form-control" required name="email" id="email">
+            </div>
+
+            <div class="mb-3">
+                <label for="password">Password</label>
+                <input type="password" placeholder="Enter Password" class="form-control" required name="password" id="password">
+            </div>
+            <button class="btn btn-success">Signup</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <br><br><br>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
