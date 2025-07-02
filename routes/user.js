@@ -47,37 +47,6 @@ router.post("/signup", async (req, res, next) => {
 router.post(
   "/login",
   saveRedirectedUrl, // Middleware to save the redirected URL
-  async (req, res, next) => {
-    const { username, email, password } = req.body;
-
-    // Check if email, username, or password is missing
-    if (!username || !email || !password) {
-      req.flash("error", "Please provide a username, email, and password.");
-      return res.redirect("/login");
-    }
-
-    try {
-      // Check if a user with the provided username and email exists
-      const user = await User.findOne({ username });
-      if (!user || user.email !== email) {
-        req.flash("error", "Invalid username or email.");
-        return res.redirect("/login"); // Redirect back if username or email doesn't match
-      }
-
-      // Validate the password
-      const isMatch = await user.authenticate(password); // assuming `authenticate` method is on your User model
-      if (!isMatch) {
-        req.flash("error", "Invalid password.");
-        return res.redirect("/login"); // Redirect back if password is incorrect
-      }
-
-      // If all validations pass, proceed to authenticate the user with passport
-      next();
-    } catch (err) {
-      req.flash("error", "An error occurred while processing your login.");
-      return res.redirect("/login");
-    }
-  },
   passport.authenticate("local", {
     failureRedirect: "/login", // Redirect to login page if authentication fails
     failureFlash: true, // Show flash message on failure

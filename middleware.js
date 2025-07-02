@@ -20,21 +20,26 @@ module.exports.saveRedirectedUrl = (req, res, next) => {
 
 module.exports.isOwner = async (req, res, next) => {
   const { id } = req.params;
-  const listing = await Listing.findById(id).populate("owner"); // Ensure owner is populated
+  try {
+    const listing = await Listing.findById(id).populate("owner"); // Ensure owner is populated
 
-  if (!listing) {
-    req.flash("error", "Listing not found!");
+    if (!listing) {
+      req.flash("error", "Listing not found!");
+      return res.redirect("/listings");
+    }
+
+    // Ensure req.user exists
+    if (!req.user || !listing.owner._id.equals(req.user._id)) {
+      req.flash("error", "You are not authorized to modify this listing.");
+      return res.redirect(`/listings/${id}`);
+    }
+
+    next(); // Proceed if the user is the owner
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "Something went wrong.");
     return res.redirect("/listings");
   }
-
-  // Check if the current user is the owner of the listing
-  if (!listing.owner._id.equals(req.user._id)) {
-    // Assuming the logged-in user is available as req.user
-    req.flash("error", "You are not authorized to modify this listing.");
-    return res.redirect(`/listings/${id}`);
-  }
-
-  next(); // Proceed if the user is the owner
 };
 
 module.exports.isReviewAuthor = async (req, res, next) => {
@@ -49,8 +54,12 @@ module.exports.isReviewAuthor = async (req, res, next) => {
       return res.redirect(`/listings/${id}`);
     }
 
-    // Check if the current user is the author of the review
-    if (!review.author || !review.author._id.equals(req.user._id)) {
+    // Ensure req.user exists before checking for author
+    if (
+      !req.user ||
+      !review.author ||
+      !review.author._id.equals(req.user._id)
+    ) {
       req.flash("error", "You cannot delete this review");
       return res.redirect(`/listings/${id}`);
     }

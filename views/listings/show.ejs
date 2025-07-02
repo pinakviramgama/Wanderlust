@@ -21,202 +21,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing Details</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Listing Details</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
 </head>
 <body>
-    <br><br>
+  <br><br>
 
-    <div class="row">
-        <div class="col-8 offset-3 list-card">
-            <h3>Listing Details</h3>
-            <div class="card">
-                <img src="<%= listing.image.url %>" class="card-img-top list-img" alt="image">
-                <div class="card-body">
-                    <h5 class="card-title"></h5>
-                    <p><i><%= listing.owner.username %></i></p>
-                    <p class="card-text"><%= listing.title %></p>
-                </div>
-            </div>
-
-            <ul>
-                <li>Title: <%= listing.title %></li>
-                <li>Description: <%= listing.description %></li>
-                <li>Price: &#8377; <%= listing.price.toLocaleString("en-IN") %></li>
-                <li>Country: <%= listing.country %></li>
-                <li>Location: <%= listing.location %></li>
-            </ul>
+  <div class="row">
+    <div class="col-8 offset-3 list-card">
+      <h3>Listing Details</h3>
+      <div class="card">
+        <img src="<%= listing.image.url %>" class="card-img-top list-img" alt="image">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <p class="card-text"><%= listing.title %></p>
         </div>
+      </div>
+
+      <ul>
+        <li>Title: <%= listing.title %></li>
+        <li>Description: <%= listing.description %></li>
+        <li>Price: &#8377; <%= listing.price.toLocaleString("en-IN") %></li>
+        <li>Country: <%= listing.country %></li>
+        <li>Location: <%= listing.location %></li>
+      </ul>
     </div>
+  </div>
 
-    <br><br><br>
+  <br><br><br>
 
-    <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
-    <div class="d-flex mybtn">
-        <form action="/listings/<%= listing._id %>?_method=DELETE" method="post">
-            <button class="btn add-btn">DELETE</button>
-        </form>
+  <% if(currUser && listing.owner && currUser._id.equals(listing.owner._id)) { %>
+  <div class="d-flex mybtn">
+    <form action="/listings/<%= listing._id %>?_method=DELETE" method="post">
+      <button class="btn add-btn">DELETE</button>
+    </form>
 
-        <form action="/listings/<%= listing._id %>/edit" method="get">
-            <button class="btn add-btn">Edit this Listing</button>
-        </form>
-    </div>
-    <% } %>
+    <form action="/listings/<%= listing._id %>/edit" method="get">
+      <button class="btn add-btn">Edit this Listing</button>
+    </form>
+  </div>
+  <% } %>
 
-    <hr><hr>
+  <hr><hr>
 
-    <% if(currUser) { %>
-    <div class="offset-3">
-        <h4>Leave a Review</h4>
-        <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
+  <% if(currUser) { %>
+  <div class="offset-3">
+    <h4>Leave a Review</h4>
+    <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
+      <label for="rating">Rating</label>
+      <div class="star-rating">
+        <input type="radio" name="rating" id="star5" value="5" class="star" />
+        <label for="star5" class="star-label">&#9733;</label>
+        <input type="radio" name="rating" id="star4" value="4" class="star" />
+        <label for="star4" class="star-label">&#9733;</label>
+        <input type="radio" name="rating" id="star3" value="3" class="star" />
+        <label for="star3" class="star-label">&#9733;</label>
+        <input type="radio" name="rating" id="star2" value="2" class="star" />
+        <label for="star2" class="star-label">&#9733;</label>
+        <input type="radio" name="rating" id="star1" value="1" class="star" />
+        <label for="star1" class="star-label">&#9733;</label>
+      </div>
+      <div class="mb-3">
+        <label for="comment" class="form-label">Comment</label>
+        <textarea rows="4" cols="8" id="review" name="comment" placeholder="Your reviews matter" class="form-control" required></textarea>
+        <div class="invalid-feedback">Please provide a valid review.</div>
+      </div>
+      <button class="btn add-btn">Submit</button>
+    </form>
+  </div>
+  <% }  else { %>
+  <div class="offset-3">
+    <form action="/login">
+      <button class="btn btn-dark">Login to See More</button>
+    </form>
+  </div>
+  <% } %>
 
-            <label for="rating">Rating</label>
-
-<!-- Star Rating Section -->
-<div class="star-rating">
-  <input type="radio" name="rating" id="star5" value="5" class="star" />
-  <label for="star5" class="star-label">&#9733;</label>
-
-  <input type="radio" name="rating" id="star4" value="4" class="star" />
-  <label for="star4" class="star-label">&#9733;</label>
-
-  <input type="radio" name="rating" id="star3" value="3" class="star" />
-  <label for="star3" class="star-label">&#9733;</label>
-
-  <input type="radio" name="rating" id="star2" value="2" class="star" />
-  <label for="star2" class="star-label">&#9733;</label>
-
-  <input type="radio" name="rating" id="star1" value="1" class="star" />
-  <label for="star1" class="star-label">&#9733;</label>
-</div>
-            <div class="mb-3">
-                <label for="comment" class="form-label">Comment</label>
-                <textarea rows="4" cols="8" id="review" name="comment" placeholder="Your reviews matter" class="form-control" required></textarea>
-                <div class="invalid-feedback">Please provide a valid review.</div>
+  <div class="offset-3">
+    <hr>
+    <h4>All Reviews</h4>
+    <ul class="myrev">
+      <% if (listing.reviews.length > 0) { %>
+        <% for (let review of listing.reviews) { %>
+          <div class="card listcard col-3">
+            <div class="card-body">
+              <p class="card-text"><%= review.comment %></p>
+              <p class="card-text">
+                <span class="stars">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <% if (i <= review.rating) { %>
+                      <span class="stardis">&#9733;</span>
+                    <% } else { %>
+                      <span class="stardis">&#9734;</span>
+                    <% } %>
+                  <% } %>
+                </span>
+              </p>
             </div>
-            <button class="btn add-btn">Submit</button>
-        </form>
-    </div>
-    <% }  else {%>
-        <div class="offset-3">
-            <form action="/login">
-                <button class="btn btn-dark">Login to See More</button>
+            <% if(currUser && currUser._id.equals(review.author._id)) { %>
+            <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+              <button type="submit" class="del btn btn-danger">DELETE</button>
             </form>
-        </div>
+            <% } %>
+          </div>
         <% } %>
+      <% } else { %>
+        <p>No reviews yet. Be the first to leave one!</p>
+      <% } %>
+    </ul>
+  </div>
 
-    <div class="offset-3">
-        <hr>
-        <h4>All Reviews</h4>
-        <ul class="myrev">
-            <% if (listing.reviews.length > 0) { %>
-                <% for (let review of listing.reviews) { %>
-                    <div class="card listcard col-3">
+  <br><br>
 
-                        <div class="card-body">
-    <h5 class="card-title"><%= review.author.username %></h5>
-    <p class="card-text"><%= review.comment %></p>
-    <p class="card-text">
-        <!-- Display stars -->
-        <span class="stars">
-            <% for (let i = 1; i <= 5; i++) { %>
-                <% if (i <= review.rating) { %>
-                     <span class="stardis"> &#9733; </span>  <!-- Filled Star -->
-                <% } else { %>
-                    <span class="stardis" > &#9734; </span>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-                <% } %>
-            <% } %>
-        </span>
-    </p>
-</div>
-
-                        <% if(currUser && currUser._id.equals(review.author._id)) { %> <!-- Check if current user is the review author -->
-                        <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                            <button type="submit" class="btn btn-danger">DELETE</button>
-                        </form>
-                        <% } %>
-                    </div>
-                <% } %>
-            <% } else { %>
-                <p>No reviews yet. Be the first to leave one!</p>
-            <% } %>
-        </ul>
-    </div>
-
-    <br><br>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <style>
-        .myrev {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        div.listcard {
-            background-color: #f9f9f9 !important;
-            border: 2px solid black !important;
-            margin-left: 5px;
-            height: auto;
-            flex: 1 1 calc(33.333% - 10px);
-            padding: 0px;
-            text-overflow: ellipsis;
-        }
-        .star-rating {
-    direction: rtl;
-    display: inline-block;
-}
-
-.star {
-    display: none;
-}
-
- .stardis {
-        font-size: 1.5rem; /* Adjust the size of the stars */
-        color: gold; /* Filled star color */
-        margin-right: 2px; /* Add some spacing between stars */
+  <style>
+    .myrev {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    div.listcard {
+      background-color: #f9f9f9 !important;
+      border: 2px solid black !important;
+      margin-left: 5px;
+      height: auto;
+      flex: 1 1 calc(33.333% - 10px);
+      padding: 0px;
+      text-overflow: ellipsis;
+    }
+    .star-rating {
+      direction: rtl;
+      display: inline-block;
+    }
+    .star {
+      display: none;
+    }
+    .stardis {
+      font-size: 1.5rem;
+      color: gold;
+      margin-right: 2px;
     }
     .stardis:last-child {
-        margin-right: 0; /* Remove extra spacing for the last star */
+      margin-right: 0;
     }
+    .star-label {
+      font-size: 2rem;
+      color: #ddd;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    .star:checked ~ .star-label {
+      color: gold;
+    }
+    .star-label:hover,
+    .star-label:hover ~ .star-label {
+      color: gold;
+    }
+  </style>
 
-.star-label {
-    font-size: 2rem;
-    color: #ddd;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.star:checked ~ .star-label {
-    color: gold;
-}
-
-.star-label:hover,
-.star-label:hover ~ .star-label {
-    color: gold;
-}
-
-    </style>
-
-    <script>
-    // Select all stars
+  <script>
     const stars = document.querySelectorAll('.star');
-
-    // Add event listeners to each star
     stars.forEach(star => {
-        star.addEventListener('change', () => {
-            // Get the selected rating
-            const rating = document.querySelector('input[name="rating"]:checked').id.replace('star', '');
-
-            // Provide user feedback (client-side only)
-            alert(`You rated this ${rating} stars`);
-        });
+      star.addEventListener('change', () => {
+        const rating = document.querySelector('input[name="rating"]:checked').id.replace('star', '');
+        alert(`You rated this ${rating} stars`);
+      });
     });
-</script>
-
+  </script>
 </body>
 </html>

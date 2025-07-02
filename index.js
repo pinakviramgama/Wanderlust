@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -14,7 +13,7 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 const Listing = require("./models/listing.js");
 const Review = require("./models/reviews.js");
-const { isLoggedIn } = require("./middleware.js");
+const { isLoggedIn, isReviewAuthor } = require("./middleware.js");
 const MongoStore = require("connect-mongo");
 
 const app = express();
@@ -31,7 +30,6 @@ app.set("views", path.join(__dirname, "views"));
 app.engine("ejs", ejsMate);
 
 // Session middleware setup
-
 const store = MongoStore.create({
   mongoUrl: process.env.MONGO_URL,
   crypto: {
@@ -57,7 +55,6 @@ const sessionOptions = {
   },
 };
 
-//newfile
 app.use(session(sessionOptions));
 
 // Flash middleware setup
@@ -70,26 +67,20 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// Middleware to set up flash messages globally
 app.use((req, res, next) => {
   res.locals.success = req.flash("success") || "";
   res.locals.deleteMsg = req.flash("deleteMsg") || "";
   res.locals.error = req.flash("error") || "";
-  res.locals.currUser = req.user || null;
-
+  res.locals.currUser = req.user || null; // Make sure currUser is set here
   next();
 });
 
 // Route modules
-
 const listings = require("./routes/listing.js");
-
 const userRouter = require("./routes/user.js");
-const { isReviewAuthor, isLoggedin } = require("./middleware.js");
 
 // Routes
 app.use("/listings", listings);
-
 app.use("/", userRouter);
 
 // Define the /testlisting route
@@ -97,14 +88,12 @@ app.get(
   "/testlisting",
   wrapAsync(async (req, res) => {
     const listings = await Listing.find({});
-
-    res.render("./listings/index.ejs", { listings });
+    res.render("listings/index.ejs", { listings });
   })
 );
 
 app.get("/search", async (req, res) => {
   const location = req.query.location; // Extract 'location' parameter from the query string
-
   console.log("Search Location:", location); // Log for debugging
 
   try {
@@ -114,7 +103,7 @@ app.get("/search", async (req, res) => {
     });
 
     if (listings.length === 0) {
-      return res.render("/listings/error.ejs");
+      return res.render("listings/error.ejs");
     }
 
     // Render the search results (assuming you're using EJS)
@@ -162,7 +151,6 @@ app.post("/listings/:listingId/reviews", async (req, res) => {
 
 app.delete(
   "/listings/:listingId/reviews/:reviewId",
-
   isReviewAuthor,
   async (req, res) => {
     try {
@@ -181,7 +169,6 @@ app.delete(
       res.redirect(`/listings/${req.params.listingId}`);
     } catch (err) {
       console.log(err);
-
       req.flash("error", "Something went wrong");
       res.redirect(`/listings/${req.params.listingId}`);
     }
@@ -215,9 +202,7 @@ app.use((err, req, res, next) => {
   if (process.env.NODE_ENV === "development") {
     console.error(err);
   }
-  res
-    .status(statusCode)
-    .render("./listings/error.ejs", { statusCode, message });
+  res.status(statusCode).render("listings/error.ejs", { statusCode, message });
 });
 
 // Start the server
